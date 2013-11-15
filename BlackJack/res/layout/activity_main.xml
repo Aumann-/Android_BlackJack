@@ -1,0 +1,159 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/green"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <Button
+        android:id="@+id/stand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="14dp"
+        android:text="@string/stand" />
+
+    <ImageView
+        android:id="@+id/Player1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/Dealer1"
+        android:layout_centerVertical="true"
+        android:src="@drawable/blank"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/Dealer2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Dtotal"
+        android:layout_marginTop="14dp"
+        android:layout_toRightOf="@+id/Dealer1"
+        android:src="@drawable/blank" />
+
+    <ImageView
+        android:id="@+id/Dealer3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/Dealer2"
+        android:layout_toRightOf="@+id/Dealer2"
+        android:src="@drawable/blank" />
+
+    <ImageView
+        android:id="@+id/Dealer4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/Dealer3"
+        android:layout_toRightOf="@+id/Dealer3"
+        android:src="@drawable/blank" />
+
+    <ImageView
+        android:id="@+id/Dealer5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/Dealer4"
+        android:layout_toRightOf="@+id/Dealer4"
+        android:src="@drawable/blank" />
+
+    <ImageView
+        android:id="@+id/Player2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/Dealer3"
+        android:src="@drawable/blank" />
+
+    <ImageView
+        android:id="@+id/Player3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/Dealer4"
+        android:src="@drawable/blank" />
+
+    <ImageView
+        android:id="@+id/Player4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/Dealer5"
+        android:src="@drawable/blank" />
+
+    <ImageView
+        android:id="@+id/Player5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/Dealer5"
+        android:layout_centerVertical="true"
+        android:src="@drawable/blank" />
+
+    <ImageView
+        android:id="@+id/Dealer1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/textView1"
+        android:layout_alignTop="@+id/Dealer2"
+        android:src="@drawable/blank" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/Dtotal"
+        android:layout_alignBottom="@+id/Dtotal"
+        android:layout_alignLeft="@+id/textView1"
+        android:text="@string/dtotal" />
+
+    <TextView
+        android:id="@+id/Dtotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="14dp"
+        android:layout_toLeftOf="@+id/Dealer3"
+        android:text="0" />
+
+    <TextView
+        android:id="@+id/PlayerTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView1"
+        android:layout_alignBottom="@+id/textView1"
+        android:layout_toLeftOf="@+id/Player3"
+        android:text="0" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/Player1"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="22dp"
+        android:text="@string/ptotal" />
+
+    <Button
+        android:id="@+id/hit"
+        style="android:buttonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/stand"
+        android:layout_alignBottom="@+id/stand"
+        android:layout_alignLeft="@+id/textView1"
+        android:text="@string/hit" />
+
+    <Button
+        android:id="@+id/Deal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/hit"
+        android:layout_centerHorizontal="true"
+        android:text="@string/deal" />
+
+</RelativeLayout>
