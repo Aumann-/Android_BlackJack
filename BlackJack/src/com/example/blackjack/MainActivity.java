@@ -133,6 +133,10 @@ public class MainActivity extends Activity {
 		deal.setEnabled(false);
 		
 		
+		firstDeal(test_deck);
+		
+		
+		
 		//listener for hit button
 		hit.setOnClickListener(new View.OnClickListener() {
 			
@@ -239,42 +243,18 @@ public class MainActivity extends Activity {
 		hit.setEnabled(true);
 		stand.setEnabled(true);
 		deal.setEnabled(false);
+		
+		
+		firstDeal(test_deck);
+		
 	}//close clearHand
 	
 	//method for player moves
 	public void playerMove(deck test_deck)
 	{
-		//if first card not used
-
-		if (!p1Used)
-		{
-			p1.setImageDrawable(test_deck.drawImage()); //draw card image
-			Brovier.setTotal(evalCard(test_deck.draw(), Brovier)); //draw card value
-			Brovier.setCard(); //increment card count
-			ptotal.setText(Brovier.getTotal().toString()); //output current total
-			p1Used = true; //set used card boolean
-			if (Brovier.checkBust()) //check for bust (not needed for first card)
-			{
-				checkWinner(Brovier, Brovid);	
-			}
-		}
 		
-		//if second card not used
-		else if (!p2Used)
-		{
-			p2.setVisibility(View.VISIBLE);
-			p2.setImageDrawable(test_deck.drawImage());
-			Brovier.setTotal(evalCard(test_deck.draw(),Brovier));
-			Brovier.setCard();
-			ptotal.setText(Brovier.getTotal().toString());
-			p2Used = true;
-			if (Brovier.checkBust() || Brovier.getTotal() == 21) //check for bust or blackjack
-			{
-				checkWinner(Brovier, Brovid);	
-			}
-		}
 		//if third card not used
-		else if (!p3Used)
+		if (!p3Used)
 		{
 			p3.setVisibility(View.VISIBLE);
 			p3.setImageDrawable(test_deck.drawImage());
@@ -290,7 +270,7 @@ public class MainActivity extends Activity {
 			}
 			if (Brovier.checkBust())
 			{
-				checkWinner(Brovier, Brovid);		
+				checkWinner();		
 			}
 		}
 		
@@ -311,7 +291,7 @@ public class MainActivity extends Activity {
 			}
 			if (Brovier.checkBust())
 			{
-				checkWinner(Brovier, Brovid);		
+				checkWinner();		
 			}
 		}
 		//if fifth card not sued
@@ -331,7 +311,7 @@ public class MainActivity extends Activity {
 			}
 			if (Brovier.checkBust())
 			{
-				checkWinner(Brovier, Brovid);		
+				checkWinner();		
 			}
 		}
 		//debug
@@ -349,45 +329,9 @@ public class MainActivity extends Activity {
 		//if first card not used
 		while (!stop) //until stop flag is set
 		{
-				if (!d1Used)
-				{
-					d1.setImageDrawable(test_deck.drawImage());
-					Brovid.setTotal(evalCard(test_deck.draw(),Brovid));
-					Brovid.setCard();
-					dtotal.setText(Brovid.getTotal().toString());
-					d1Used = true;
-					if (Brovid.checkBust())
-					{
-						checkWinner(Brovier, Brovid);		
-						stop = true;
-					}
-					//stop = true;
-					
-				}
-
-				//if second card not used
-				else if (!d2Used)
-				{
-					d2.setVisibility(View.VISIBLE);
-					d2.setImageDrawable(test_deck.drawImage());
-					Brovid.setTotal(evalCard(test_deck.draw(),Brovid));
-					Brovid.setCard();
-					dtotal.setText(Brovid.getTotal().toString());
-					d2Used = true;
-					if (Brovid.checkBust() || Brovid.getCard() == 21)
-					{
-						checkWinner(Brovier, Brovid);		
-						stop = true;
-					}
-					else if (Brovid.getTotal() >= 17)
-					{
-						checkWinner(Brovier, Brovid);		
-						stop = true;
-					}
-					
-				}
+				
 				//if third card not used
-				else if (!d3Used)
+				if (!d3Used)
 				{
 					d3.setVisibility(View.VISIBLE);
 					d3.setImageDrawable(test_deck.drawImage());
@@ -403,12 +347,12 @@ public class MainActivity extends Activity {
 					}
 					if (Brovid.checkBust())
 					{
-						checkWinner(Brovier, Brovid);	
+						checkWinner();	
 						stop = true;
 					}
 					else if (Brovid.getTotal() >= 17)
 					{
-						checkWinner(Brovier, Brovid);		
+						checkWinner();		
 						stop = true;
 					}
 					
@@ -430,12 +374,12 @@ public class MainActivity extends Activity {
 					}
 					if (Brovid.checkBust())
 					{
-						checkWinner(Brovier, Brovid);	
+						checkWinner();	
 						stop = true;
 					}
 					else if (Brovid.getTotal() >= 17)
 					{
-						checkWinner(Brovier, Brovid);		
+						checkWinner();		
 						stop = true;
 					}
 					
@@ -457,12 +401,12 @@ public class MainActivity extends Activity {
 					}
 					if (Brovid.checkBust())
 					{
-						checkWinner(Brovier, Brovid);	
+						checkWinner();	
 						stop = true;
 					}
 					else if (Brovid.getTotal() >= 17)
 					{
-						checkWinner(Brovier, Brovid);		
+						checkWinner();		
 						stop = true;
 					}
 				
@@ -470,38 +414,39 @@ public class MainActivity extends Activity {
 				//debug
 				else
 				{
-					checkWinner(Brovier, Brovid);
+					checkWinner();
 					//Toast.makeText(getApplicationContext(), "Dealer Broken", Toast.LENGTH_SHORT).show();
 				}
 		}//close while
+		checkWinner();
 	}//close dealerMove
 	
 	//method to determine winner
-	public void checkWinner(Player p, Player d)
+	public void checkWinner()
 	{
 		hit.setEnabled(false); //disable hit button
 		stand.setEnabled(false); //disable stand button
 		deal.setEnabled(true); //enable deal button
 		//check for player bust
-		if (p.getTotal() > 21)
+		if (Brovier.getTotal() > 21)
 		{
 			Toast.makeText(getApplicationContext(), 
 					"Player: BUST", Toast.LENGTH_SHORT).show();
 		}
 		//check for dealer bust
-		else if (d.getTotal() > 21)
+		else if (Brovid.getTotal() > 21)
 		{
 			Toast.makeText(getApplicationContext(), 
 					"Dealer: BUST", Toast.LENGTH_SHORT).show();
 		}
 		//check for player blackjack
-		else if (p.getTotal() == 21 && p.getCard() == 2)
+		else if (Brovier.getTotal() == 21 && Brovier.getCard() == 2)
 		{
 				Toast.makeText(getApplicationContext(), 
 						"Player: BLACKJACK", Toast.LENGTH_SHORT).show();
 		}
 		//check for dealer blackjack
-		else if (d.getTotal() == 21 && d.getCard() == 2)
+		else if (Brovid.getTotal() == 21 && Brovid.getCard() == 2)
 		{
 			Toast.makeText(getApplicationContext(), 
 					"Dealer: BLACKJACK", Toast.LENGTH_SHORT).show();
@@ -510,20 +455,20 @@ public class MainActivity extends Activity {
 		else
 		{
 			//check for palyer wins
-			if (p.getTotal() > d.getTotal())
+			if (Brovier.getTotal() > Brovid.getTotal())
 			{
 				//player wins
 				Toast.makeText(getApplicationContext(), 
 						"Player: WIN", Toast.LENGTH_SHORT).show();
 			}
 			//check for dealer wins
-			else if (d.getTotal() > p.getTotal())
+			else if (Brovid.getTotal() > Brovier.getTotal())
 			{
 				Toast.makeText(getApplicationContext(), 
 						"Dealer: WIN", Toast.LENGTH_SHORT).show();
 			}
 			//check for tie
-			else if (p.getTotal() == d.getTotal())
+			else if (Brovier.getTotal() == Brovid.getTotal())
 			{
 				//push
 				Toast.makeText(getApplicationContext(), 
@@ -538,6 +483,55 @@ public class MainActivity extends Activity {
 			}
 		}
 	}//close checkWinner
+	
+	
+	public void firstDeal(deck test_deck)
+	{
+		//Deal first two cards for player
+		p1.setImageDrawable(test_deck.drawImage()); //draw card image
+		Brovier.setTotal(evalCard(test_deck.draw(), Brovier)); //draw card value
+		Brovier.setCard(); //increment card count
+		ptotal.setText(Brovier.getTotal().toString()); //output current total
+		p1Used = true; //set used card boolean
+
+	
+		p2.setVisibility(View.VISIBLE);
+		p2.setImageDrawable(test_deck.drawImage());
+		Brovier.setTotal(evalCard(test_deck.draw(),Brovier));
+		Brovier.setCard();
+		ptotal.setText(Brovier.getTotal().toString());
+		p2Used = true;
+		if (Brovier.getTotal() == 21) //check for bust or blackjack
+		{
+			checkWinner();	
+		}
+
+	
+	
+			d1.setImageDrawable(test_deck.drawImage());
+			Brovid.setTotal(evalCard(test_deck.draw(),Brovid));
+			Brovid.setCard();
+			dtotal.setText(Brovid.getTotal().toString());
+			d1Used = true;
+
+			
+			d2.setVisibility(View.VISIBLE);
+			d2.setImageDrawable(test_deck.drawImage());
+			Brovid.setTotal(evalCard(test_deck.draw(),Brovid));
+			Brovid.setCard();
+			dtotal.setText(Brovid.getTotal().toString());
+			d2Used = true;
+			if (Brovid.getCard() == 21)
+			{
+				checkWinner();		
+				stop = true;
+			}
+			else if (Brovid.getTotal() >= 17)
+			{		
+				stop = true;
+			}
+			
+	}
 	
 }//close Main class
 

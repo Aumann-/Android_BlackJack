@@ -1,7 +1,5 @@
 package com.example.blackjack;
 
-import android.content.Context;
-
 public class Player {
 	private Integer Total;
 	private Integer cardTotal;
