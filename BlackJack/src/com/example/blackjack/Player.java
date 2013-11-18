@@ -36,6 +36,11 @@ public class Player {
 		cardTotal++;
 	}
 	
+	public void resetCard()
+	{
+		cardTotal = 0;
+	}
+	
 	//method to check if player busted
 	public Boolean checkBust()
 	{

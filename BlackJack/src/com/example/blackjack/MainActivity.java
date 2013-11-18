@@ -212,6 +212,7 @@ public class MainActivity extends Activity {
 		d3.setVisibility(View.INVISIBLE);
 		d4.setVisibility(View.INVISIBLE);
 		d5.setVisibility(View.INVISIBLE);
+		//reset card flags
 		p1Used = false;
 		p2Used = false;
 		p3Used = false;
@@ -222,12 +223,19 @@ public class MainActivity extends Activity {
 		d3Used = false;
 		d4Used = false;
 		d5Used = false;
+		//dealer stop flag
 		stop = false;
+		//Ace flag
 		Ace = false;
+		//reset player totals and card totals
 		Brovier.setTotal(0);
 		Brovid.setTotal(0);
+		Brovier.resetCard();
+		Brovid.resetCard();
+		//reset total displays
 		ptotal.setText(Brovier.getTotal().toString());
 		dtotal.setText(Brovid.getTotal().toString());
+		//enable hit & stand buttons, disable deal button
 		hit.setEnabled(true);
 		stand.setEnabled(true);
 		deal.setEnabled(false);
