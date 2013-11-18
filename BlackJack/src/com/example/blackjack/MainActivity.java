@@ -2,7 +2,8 @@
 Roy Smith
 Blackjack game
 Current status:
-Program works as a single player game with the only winning move is to get 21
+Program works as BlackJack should
+	Program does not keep track of wins and losses
 
 Needs:									Completed:
 Expand player class for dealer		 	Unneeded
@@ -156,7 +157,10 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				dealerMove(test_deck); //call dealer move method
+				if (Brovid.getTotal() > Brovier.getTotal())
+					checkWinner();
+				else
+					dealerMove(test_deck); //call dealer move method
 			}//close onClick
 		});//close stand listener
 		
@@ -420,7 +424,8 @@ public class MainActivity extends Activity {
 					//Toast.makeText(getApplicationContext(), "Dealer Broken", Toast.LENGTH_SHORT).show();
 				}
 		}//close while
-		if (!CW)
+		//if dealer stops after first two cards, skip loop and checkWinner.
+		if (!CW) //check flag to avoid calling method twice
 			checkWinner();
 	}//close dealerMove
 	
