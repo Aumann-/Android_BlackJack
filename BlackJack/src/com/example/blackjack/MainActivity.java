@@ -12,7 +12,20 @@ Add stand button.						11/15
 Add deal button to reset game.			11/15
 Move checkBust method to player class	11/15
 Add conversion for Aces if 11 value 
-would cause bust (change Ace value to 1	11/15
+would cause bust (change Ace value to 1)11/15
+If player get to five card without busting,
+switch to dealer move					11/18
+If dealer gets to 5 cards without busting,
+switch to checkWinner.					11/18
+
+Bugs:
+If 21 is scored, game does not end
+
+
+Face cards occasionally use Ace flag to revert to 1
+	11/18: 	Potential fix by resetting flag at beginning of dealer move.
+			 Bug due to player getting Ace as last card, setting flag to true,
+			 dealer than plays with flag being true and reverting at first bust.
 
 */
 package com.example.blackjack;
@@ -210,6 +223,7 @@ public class MainActivity extends Activity {
 		d4Used = false;
 		d5Used = false;
 		stop = false;
+		Ace = false;
 		Brovier.setTotal(0);
 		Brovid.setTotal(0);
 		ptotal.setText(Brovier.getTotal().toString());
@@ -315,13 +329,15 @@ public class MainActivity extends Activity {
 		//debug
 		else
 		{
-			Toast.makeText(getApplicationContext(), "Player Broken", Toast.LENGTH_SHORT).show();
+			dealerMove(test_deck);
+			//Toast.makeText(getApplicationContext(), "Player Broken", Toast.LENGTH_SHORT).show();
 		}
 	}//close playerMove
 
 	
 	public void dealerMove(deck test_deck)
 	{
+		Ace = false;
 		//if first card not used
 		while (!stop) //until stop flag is set
 		{
@@ -446,7 +462,8 @@ public class MainActivity extends Activity {
 				//debug
 				else
 				{
-					Toast.makeText(getApplicationContext(), "Dealer Broken", Toast.LENGTH_SHORT).show();
+					checkWinner(Brovier, Brovid);
+					//Toast.makeText(getApplicationContext(), "Dealer Broken", Toast.LENGTH_SHORT).show();
 				}
 		}//close while
 	}//close dealerMove
