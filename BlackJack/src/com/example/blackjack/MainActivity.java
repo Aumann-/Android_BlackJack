@@ -19,7 +19,9 @@ If dealer gets to 5 cards without busting,
 switch to checkWinner.					11/18
 
 Bugs:
-If 21 is scored, game does not end
+Toast displays twice on occasion
+	11/18: 	Due to calling checkWinner() at end of dealerMove,
+			Need to add extra flag to not perform second check
 
 
 Face cards occasionally use Ace flag to revert to 1
@@ -27,6 +29,9 @@ Face cards occasionally use Ace flag to revert to 1
 			 Bug due to player getting Ace as last card, setting flag to true,
 			 dealer than plays with flag being true and reverting at first bust.
 
+Ace flag bug after autodeal
+	Due to autodeal setting ace flag, totals are incorrect.
+	11/18:	Fixed by separating player and dealer flag into two.
 */
 package com.example.blackjack;
 
@@ -66,21 +71,20 @@ public class MainActivity extends Activity {
 	TextView dtotal;
 	//booleans
 	//players cards
-	Boolean p1Used = false;
-	Boolean p2Used = false;
 	Boolean p3Used = false;
 	Boolean p4Used = false;
 	Boolean p5Used = false;
 	//dealer cards
-	Boolean d1Used = false;
-	Boolean d2Used = false;
 	Boolean d3Used = false;
 	Boolean d4Used = false;
 	Boolean d5Used = false;
 	//flag for dealer to stop
 	Boolean stop = false;
 	//flags for ace values of 11
-	Boolean Ace = false;
+	Boolean PAce = false; //player
+	Boolean DAce = false; //dealer
+	//flag for second checkWinner()
+	Boolean CW = false;
 	//player objects
 	Player Brovier = new Player(); //instance of player class for user
 	Player Brovid = new Player(); //instance of player class for dealer
@@ -120,11 +124,9 @@ public class MainActivity extends Activity {
 		//shuffle deck
 		test_deck.shuffle();
 		//set all cards except first to invisible
-		p2.setVisibility(View.INVISIBLE);
 		p3.setVisibility(View.INVISIBLE);
 		p4.setVisibility(View.INVISIBLE);
 		p5.setVisibility(View.INVISIBLE);
-		d2.setVisibility(View.INVISIBLE);
 		d3.setVisibility(View.INVISIBLE);
 		d4.setVisibility(View.INVISIBLE);
 		d5.setVisibility(View.INVISIBLE);
@@ -179,7 +181,7 @@ public class MainActivity extends Activity {
 	}
 	
 	//method to convert char value of card to integer value
-	public int evalCard(int value, Player p)
+	public int evalCard(int value, Player p, Boolean a)
 	{
 		//king, queen, jack, or ten
 		if (value == 10 || value == 11 || value == 12 || value == 13)
@@ -190,7 +192,10 @@ public class MainActivity extends Activity {
 		//ace if 11 value would not bust
 		else if (value == 1 && p.getTotal() <=10)
 		{
-			Ace = true;
+			if (a)
+				PAce = true;
+			else if (!a)
+				DAce = true;
 			return 11;
 		}
 		else
@@ -208,29 +213,26 @@ public class MainActivity extends Activity {
 		//set all but first cards to blank and invisible
 		p1.setImageDrawable(blank);
 		d1.setImageDrawable(blank);
-		p2.setVisibility(View.INVISIBLE);
 		p3.setVisibility(View.INVISIBLE);
 		p4.setVisibility(View.INVISIBLE);
 		p5.setVisibility(View.INVISIBLE);
-		d2.setVisibility(View.INVISIBLE);
 		d3.setVisibility(View.INVISIBLE);
 		d4.setVisibility(View.INVISIBLE);
 		d5.setVisibility(View.INVISIBLE);
 		//reset card flags
-		p1Used = false;
-		p2Used = false;
 		p3Used = false;
 		p4Used = false;
 		p5Used = false;
-		d1Used = false;
-		d2Used = false;
 		d3Used = false;
 		d4Used = false;
 		d5Used = false;
 		//dealer stop flag
 		stop = false;
 		//Ace flag
-		Ace = false;
+		PAce = false;
+		DAce = false;
+		//checkWinner flag
+		CW = false;
 		//reset player totals and card totals
 		Brovier.setTotal(0);
 		Brovid.setTotal(0);
@@ -252,21 +254,21 @@ public class MainActivity extends Activity {
 	//method for player moves
 	public void playerMove(deck test_deck)
 	{
-		
+		//PAce = false;
 		//if third card not used
 		if (!p3Used)
 		{
 			p3.setVisibility(View.VISIBLE);
 			p3.setImageDrawable(test_deck.drawImage());
-			Brovier.setTotal(evalCard(test_deck.draw(),Brovier));
+			Brovier.setTotal(evalCard(test_deck.draw(),Brovier, true));
 			Brovier.setCard();
 			ptotal.setText(Brovier.getTotal().toString());
 			p3Used = true;
-			if (Brovier.checkBust() && Ace)
+			if (Brovier.checkBust() && PAce)
 			{
 				Brovier.setTotal(-10);
 				ptotal.setText(Brovier.getTotal().toString());
-				Ace = false;
+				PAce = false;
 			}
 			if (Brovier.checkBust())
 			{
@@ -279,15 +281,15 @@ public class MainActivity extends Activity {
 		{
 			p4.setVisibility(View.VISIBLE);
 			p4.setImageDrawable(test_deck.drawImage());
-			Brovier.setTotal(evalCard(test_deck.draw(),Brovier));
+			Brovier.setTotal(evalCard(test_deck.draw(),Brovier, true));
 			Brovier.setCard();
 			ptotal.setText(Brovier.getTotal().toString());
 			p4Used = true;
-			if (Brovier.checkBust() && Ace)
+			if (Brovier.checkBust() && PAce)
 			{
 				Brovier.setTotal(-10);
 				ptotal.setText(Brovier.getTotal().toString());
-				Ace = false;
+				PAce = false;
 			}
 			if (Brovier.checkBust())
 			{
@@ -299,15 +301,15 @@ public class MainActivity extends Activity {
 		{
 			p5.setVisibility(View.VISIBLE);
 			p5.setImageDrawable(test_deck.drawImage());
-			Brovier.setTotal(evalCard(test_deck.draw(),Brovier));
+			Brovier.setTotal(evalCard(test_deck.draw(),Brovier, true));
 			Brovier.setCard();
 			ptotal.setText(Brovier.getTotal().toString());
 			p5Used = true;
-			if (Brovier.checkBust() && Ace)
+			if (Brovier.checkBust() && PAce)
 			{
 				Brovier.setTotal(-10);
 				ptotal.setText(Brovier.getTotal().toString());
-				Ace = false;
+				PAce = false;
 			}
 			if (Brovier.checkBust())
 			{
@@ -325,25 +327,25 @@ public class MainActivity extends Activity {
 	
 	public void dealerMove(deck test_deck)
 	{
-		Ace = false;
+		//DAce = false;
 		//if first card not used
 		while (!stop) //until stop flag is set
 		{
-				
+				CW = true;
 				//if third card not used
 				if (!d3Used)
 				{
 					d3.setVisibility(View.VISIBLE);
 					d3.setImageDrawable(test_deck.drawImage());
-					Brovid.setTotal(evalCard(test_deck.draw(),Brovid));
+					Brovid.setTotal(evalCard(test_deck.draw(),Brovid, false));
 					Brovid.setCard();
 					dtotal.setText(Brovid.getTotal().toString());
 					d3Used = true;
-					if (Brovid.checkBust() && Ace)
+					if (Brovid.checkBust() && DAce)
 					{
 						Brovid.setTotal(-10);
 						dtotal.setText(Brovid.getTotal().toString());
-						Ace = false;
+						DAce = false;
 					}
 					if (Brovid.checkBust())
 					{
@@ -362,15 +364,15 @@ public class MainActivity extends Activity {
 				{
 					d4.setVisibility(View.VISIBLE);
 					d4.setImageDrawable(test_deck.drawImage());
-					Brovid.setTotal(evalCard(test_deck.draw(),Brovid));
+					Brovid.setTotal(evalCard(test_deck.draw(),Brovid, false));
 					Brovid.setCard();
 					dtotal.setText(Brovid.getTotal().toString());
 					d4Used = true;
-					if (Brovid.checkBust() && Ace)
+					if (Brovid.checkBust() && DAce)
 					{
 						Brovid.setTotal(-10);
 						dtotal.setText(Brovid.getTotal().toString());
-						Ace = false;
+						DAce = false;
 					}
 					if (Brovid.checkBust())
 					{
@@ -389,15 +391,15 @@ public class MainActivity extends Activity {
 				{
 					d5.setVisibility(View.VISIBLE);
 					d5.setImageDrawable(test_deck.drawImage());
-					Brovid.setTotal(evalCard(test_deck.draw(),Brovid));
+					Brovid.setTotal(evalCard(test_deck.draw(),Brovid, false));
 					Brovid.setCard();
 					dtotal.setText(Brovid.getTotal().toString());
 					d5Used = true;
-					if (Brovid.checkBust() && Ace)
+					if (Brovid.checkBust() && DAce)
 					{
 						Brovid.setTotal(-10);
 						dtotal.setText(Brovid.getTotal().toString());
-						Ace = false;
+						DAce = false;
 					}
 					if (Brovid.checkBust())
 					{
@@ -418,7 +420,8 @@ public class MainActivity extends Activity {
 					//Toast.makeText(getApplicationContext(), "Dealer Broken", Toast.LENGTH_SHORT).show();
 				}
 		}//close while
-		checkWinner();
+		if (!CW)
+			checkWinner();
 	}//close dealerMove
 	
 	//method to determine winner
@@ -489,48 +492,40 @@ public class MainActivity extends Activity {
 	{
 		//Deal first two cards for player
 		p1.setImageDrawable(test_deck.drawImage()); //draw card image
-		Brovier.setTotal(evalCard(test_deck.draw(), Brovier)); //draw card value
+		Brovier.setTotal(evalCard(test_deck.draw(), Brovier, true)); //draw card value
 		Brovier.setCard(); //increment card count
-		ptotal.setText(Brovier.getTotal().toString()); //output current total
-		p1Used = true; //set used card boolean
 
 	
-		p2.setVisibility(View.VISIBLE);
 		p2.setImageDrawable(test_deck.drawImage());
-		Brovier.setTotal(evalCard(test_deck.draw(),Brovier));
+		Brovier.setTotal(evalCard(test_deck.draw(),Brovier, true));
 		Brovier.setCard();
 		ptotal.setText(Brovier.getTotal().toString());
-		p2Used = true;
 		if (Brovier.getTotal() == 21) //check for bust or blackjack
 		{
 			checkWinner();	
 		}
 
 	
-	
-			d1.setImageDrawable(test_deck.drawImage());
-			Brovid.setTotal(evalCard(test_deck.draw(),Brovid));
-			Brovid.setCard();
-			dtotal.setText(Brovid.getTotal().toString());
-			d1Used = true;
+		//deal first two cards to dealer
+		d1.setImageDrawable(test_deck.drawImage());
+		Brovid.setTotal(evalCard(test_deck.draw(),Brovid, false));
+		Brovid.setCard();
 
-			
-			d2.setVisibility(View.VISIBLE);
-			d2.setImageDrawable(test_deck.drawImage());
-			Brovid.setTotal(evalCard(test_deck.draw(),Brovid));
-			Brovid.setCard();
-			dtotal.setText(Brovid.getTotal().toString());
-			d2Used = true;
-			if (Brovid.getCard() == 21)
-			{
-				checkWinner();		
-				stop = true;
-			}
-			else if (Brovid.getTotal() >= 17)
-			{		
-				stop = true;
-			}
-			
+		
+		d2.setImageDrawable(test_deck.drawImage());
+		Brovid.setTotal(evalCard(test_deck.draw(),Brovid, false));
+		Brovid.setCard();
+		dtotal.setText(Brovid.getTotal().toString());
+		if (Brovid.getTotal() == 21)
+		{
+			checkWinner();		
+			stop = true;
+		}
+		else if (Brovid.getTotal() >= 17)
+		{		
+			stop = true;
+		}
+		
 	}
 	
 }//close Main class
