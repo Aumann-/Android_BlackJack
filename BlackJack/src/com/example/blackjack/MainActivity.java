@@ -5,19 +5,20 @@ Current status:
 Program works as BlackJack should
 	Program does not keep track of wins and losses
 
-Needs:									Completed:
-Expand player class for dealer		 	Unneeded
-Add dealer for player to go against.	11/15
-Add hit button.							11/15
-Add stand button.						11/15
-Add deal button to reset game.			11/15
-Move checkBust method to player class	11/15
+Needs:											Completed:
+Expand player class for dealer		 			Unneeded
+Add dealer for player to go against.			11/15
+Add hit button.									11/15
+Add stand button.								11/15
+Add deal button to reset game.					11/15
+Move checkBust method to player class			11/15
 Add conversion for Aces if 11 value 
-would cause bust (change Ace value to 1)11/15
+would cause bust (change Ace value to 1)		11/15
 If player get to five card without busting,
-switch to dealer move					11/18
+switch to dealer move							11/18
 If dealer gets to 5 cards without busting,
-switch to checkWinner.					11/18
+switch to checkWinner.							11/18
+Add counters for keeping track of wins/losses
 
 Bugs:
 Toast displays twice on occasion
